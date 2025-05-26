@@ -40,7 +40,7 @@ function withCORS(headers, request) {
 }
 function proxyRequest(req, res, proxy) {
     const location = req.corsAnywhereRequestState.location;
-    req.url = location.path;
+    req. = location.path;
     const proxyOptions = {
         changeOrigin: false,
         prependPath: false,
@@ -80,13 +80,13 @@ function proxyRequest(req, res, proxy) {
             },
         },
     };
-    const proxyThroughUrl = req.corsAnywhereRequestState.getProxyForUrl(location.href);
-    if (proxyThroughUrl) {
-        proxyOptions.target = proxyThroughUrl;
+    const proxyThrough = req.corsAnywhereRequestState.getProxyFor(location.href);
+    if (proxyThrough) {
+        proxyOptions.target = proxyThrough;
         proxyOptions.toProxy = true;
-        // If a proxy URL was set, req.url must be an absolute URL. Then the request will not be sent
-        // directly to the proxied URL, but through another proxy.
-        req.url = location.href;
+        // If a proxy  was set, req. must be an absolute . Then the request will not be sent
+        // directly to the proxied , but through another proxy.
+        req. = location.href;
     }
     // Start proxying the request
     try {
@@ -102,7 +102,7 @@ function onProxyResponse(proxy, proxyReq, proxyRes, req, res) {
     const requestState = req.corsAnywhereRequestState;
     const statusCode = proxyRes.statusCode;
     if (!requestState.redirectCount_) {
-        res.setHeader("x-request-url", requestState.location.href);
+        res.setHeader("x-request-", requestState.location.href);
     }
     // Handle redirects
     if (statusCode === 301 || statusCode === 302 || statusCode === 303 || statusCode === 307 || statusCode === 308) {
@@ -396,6 +396,7 @@ function createServer(options) {
 const host = process.env.HOST || "0.0.0.0";
 const port = process.env.PORT || 8080;
 const web_server_url = process.env.PUBLIC_URL || `http://${host}:${port}`;
+console.log(web_server_url);
 function server() {
     const originBlacklist = parseEnvList(process.env.CORSANYWHERE_BLACKLIST);
     const originWhitelist = parseEnvList(process.env.CORSANYWHERE_WHITELIST);
